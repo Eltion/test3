@@ -1,0 +1,13 @@
+{
+    "name": "OLEDB 3",
+    "deps": [
+        {
+            "name": "Data - OLEDB",
+            "deps": []
+        },
+        {
+            "name": "Utility - Collection Manipulation",
+            "deps": []
+        }
+    ]
+}

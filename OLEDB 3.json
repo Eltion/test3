@@ -1,0 +1,14 @@
+{
+    "processid": "BB6C3CAF-F35F-4399-9312-3C6CE9A83ABA",
+    "ProcessType": "P",
+    "name": "OLEDB 3",
+    "description": "qwe",
+    "version": "1.0",
+    "createdate": "2020-10-22 13:20:11.527000",
+    "lastmodifieddate": "2020-10-23 10:44:15.373000",
+    "AttributeID": 2,
+    "runmode": 1,
+    "sharedObject": false,
+    "forceLiteralForm": false,
+    "useLegacyNamespace": true
+}

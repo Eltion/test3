@@ -1,0 +1,14 @@
+{
+    "processid": "9FC19DDA-3610-454F-8713-A55AF212D309",
+    "ProcessType": "O",
+    "name": "Data - OLEDB",
+    "description": "A SQL interface for interacting with OLEDB data sources",
+    "version": "6.3.0.6190",
+    "createdate": "2020-10-16 14:58:37.180000",
+    "lastmodifieddate": "2020-10-16 14:58:37.180000",
+    "AttributeID": 0,
+    "runmode": 1,
+    "sharedObject": false,
+    "forceLiteralForm": false,
+    "useLegacyNamespace": true
+}

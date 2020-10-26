@@ -1,0 +1,14 @@
+{
+    "processid": "6F9680F1-616C-4884-B58C-42ED51446377",
+    "ProcessType": "O",
+    "name": "Utility - Collection Manipulation",
+    "description": "Utility functions for manipulating collections.",
+    "version": "6.4.0.8445",
+    "createdate": "2020-10-09 18:03:24.217000",
+    "lastmodifieddate": "2020-10-11 23:52:03.190000",
+    "AttributeID": 0,
+    "runmode": 1,
+    "sharedObject": false,
+    "forceLiteralForm": false,
+    "useLegacyNamespace": true
+}

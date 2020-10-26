@@ -1,0 +1,304 @@
+<process name="OLEDB 3" version="1.0" bpversion="6.9.0.26970" narrative="qwe" byrefcollection="true">
+  <view>
+    <camerax>-1</camerax>
+    <cameray>369</cameray>
+    <zoom version="2">1.25</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <stage stageid="315a04f1-d94f-4d5c-b438-71fbbf294b7a" name="Stage1" type="ProcessInfo">
+    <display x="-360" y="-45" w="150" h="90" />
+  </stage>
+  <stage stageid="774942c0-7bb4-4ac6-8a75-f2f6f398c545" name="Start" type="Start">
+    <display x="60" y="-120" />
+    <onsuccess>2c3f3174-efa7-41e3-abda-1f717a8940a9</onsuccess>
+  </stage>
+  <stage stageid="f217062d-40cc-49cf-a6fd-17a0502d5d75" name="End" type="End">
+    <display x="60" y="840" />
+  </stage>
+  <stage stageid="2c3f3174-efa7-41e3-abda-1f717a8940a9" name="Set Connection to Input File" type="Action">
+    <display x="60" y="-45" />
+    <inputs>
+      <input type="text" name="Database" narrative="Optional. The path to the oledb database file" expr="" />
+      <input type="password" name="Password" narrative="Optional. The password if required to open the oledb database." expr="" />
+      <input type="text" name="Provider" narrative="Optional. Allows the database provider to be overridden." expr="" />
+      <input type="text" name="Connection String" narrative="Optional. Allows the full connection string to be provided. If supplying this parameter no other parameters are required." expr="&quot;Provider=Microsoft.ACE.OLEDB.12.0;Data Source='&quot;&amp;[File1]&amp;&quot;';Extended Properties='Excel 12.0 Xml;HDR=YES;'&quot;" />
+    </inputs>
+    <onsuccess>6f341345-0229-4fe1-9690-fa5d714bd947</onsuccess>
+    <resource object="Data - OLEDB" action="Set Connection" />
+  </stage>
+  <stage stageid="12a09d68-067a-4f86-9054-878a7e7c172f" name="File1" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-75" y="-30" />
+    <datatype>text</datatype>
+    <initialvalue xml:space="preserve">C:\BluePrism\files\2019-10-28_batch_upload_template_2555.xlsx</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="ecbc9496-5663-4cc5-838f-396b66410252" name="File2" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="15" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="6f341345-0229-4fe1-9690-fa5d714bd947" name="Data - OLEDB::Open" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="15" />
+    <onsuccess>6459d59f-cdaa-445a-b3b6-1a30f907f503</onsuccess>
+    <resource object="Data - OLEDB" action="Open" />
+  </stage>
+  <stage stageid="2d74e8b2-3424-49ac-b778-1c1af19828ea" name="SQL Query" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="75" />
+    <datatype>text</datatype>
+    <initialvalue xml:space="preserve">SELECT COUNT([Lot Number]),[Lot Number] FROM 
+(SELECT DISTINCT  [Lot Number], [Case Identifier] FROM
+(SELECT [Lot Number],[Case Identifier] FROM [2555 28.10$] IN 'C:\BluePrism\files\2555 28.10.xls'  'Excel 12.0;' ), [batch upload$]
+ WHERE [Lot Number] = [Batch])
+GROUP BY [Lot Number]</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="a296f1b2-d3f7-44f8-bdca-29267fdbb95f" name="Data - OLEDB::Execute" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="90" w="90" h="30" />
+    <inputs>
+      <input type="text" name="SQL" friendlyname="SQL" expr="[Data1]" />
+    </inputs>
+    <resource object="Data - OLEDB" action="Execute" />
+  </stage>
+  <stage stageid="28f9762c-960b-45a2-857c-9b359510ccf4" name="Results" type="Collection">
+    <display x="300" y="30" w="150" h="60" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="1cd2e128-6a11-470f-8468-6bbb7a5683bb" name="Results2" type="Collection">
+    <display x="465" y="45" w="120" h="60" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="c9af384c-7594-4d0e-95e8-431fe7270ff2" name="Counter" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="195" />
+    <datatype>number</datatype>
+    <initialvalue>0</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="b84bb399-fe8c-4364-b4e1-8802874fe5ad" name="Data1" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="135" />
+    <datatype>text</datatype>
+    <initialvalue xml:space="preserve">UPDATE [batch upload$] SET [BUOM Stock (manual)]=0  WHERE [Batch] IN (SELECT [Batch] FROM [batch upload$] 
+      WHERE [Batch] NOT IN 
+      (SELECT [Case Identifier] FROM [2555 28.10$] IN 'C:\BluePrism\files\2555 28.10.xls'  'Excel 12.0;' ))</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="5f292ef9-3bfc-46ba-8c82-3edd1842b05b" name="Join" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="240" />
+    <inputs>
+      <input type="text" name="SQL" friendlyname="SQL" narrative="An SQL query to fetch the data. In most cases this will be a 'select' query." expr="&quot;SELECT [Batch], [Lot Number],[Case Identifier],[BUOM Stock],[Unit Quantity] FROM&#xA;(SELECT [Lot Number], [Case Identifier],[Unit Quantity] FROM [2555 28.10$] IN 'C:\BluePrism\files\2555 28.10.xls'  'Excel 12.0;' ) b,(SELECT DISTINCT [batch upload$].[Batch],[batch upload$].[BUOM Stock] FROM [batch upload$]) a&#xA; WHERE b.[Lot Number] = a.[Batch]&#xA;ORDER BY [Lot Number]&quot;" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Results" friendlyname="Results" stage="Results2" />
+    </outputs>
+    <onsuccess>33a4a9bf-01a3-4097-b5ef-5c17bde97a76</onsuccess>
+    <resource object="Data - OLEDB" action="Get Collection" />
+  </stage>
+  <stage stageid="dd1370b0-55ad-4376-b1d5-b9767d285c7a" name="Data2" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="255" />
+    <datatype>unknown</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="6459d59f-cdaa-445a-b3b6-1a30f907f503" name="Data - OLEDB::Get Collection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="150" />
+    <inputs>
+      <input type="text" name="SQL" friendlyname="SQL" narrative="An SQL query to fetch the data. In most cases this will be a 'select' query." expr="&quot;SELECT COUNT(*) AS C, [Lot Number] FROM (SELECT [Batch], [Lot Number] FROM&#xA;(SELECT [Lot Number], [Case Identifier] FROM [2555 28.10$] IN 'C:\BluePrism\files\2555 28.10.xls'  'Excel 12.0;' ) b,(SELECT DISTINCT [batch upload$].[Batch] FROM [batch upload$]) a&#xA; WHERE b.[Lot Number] = a.[Batch]&#xA;ORDER BY [Lot Number]) GROUP BY [Lot Number]&quot;" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Results" friendlyname="Results" stage="Results" />
+    </outputs>
+    <onsuccess>3acba162-f7d9-4c86-bf21-f2aa9531c00d</onsuccess>
+    <resource object="Data - OLEDB" action="Get Collection" />
+  </stage>
+  <stage stageid="4ca9974e-19b1-47af-9c96-dc523a65c3e9" name="Data - OLEDB::Close" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="780" />
+    <onsuccess>f217062d-40cc-49cf-a6fd-17a0502d5d75</onsuccess>
+    <resource object="Data - OLEDB" action="Close" />
+  </stage>
+  <stage stageid="33a4a9bf-01a3-4097-b5ef-5c17bde97a76" name="Loop Start1" type="LoopStart">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="285" />
+    <onsuccess>d03adc73-001d-40e6-9a04-ace10fefb94e</onsuccess>
+    <groupid>b7942cab-9076-49f4-bcea-192c4b8f79e8</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>Results</loopdata>
+  </stage>
+  <stage stageid="a7ee4554-d022-4321-93a8-0e3fd700d9f3" name="Loop End1" type="LoopEnd">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="720" />
+    <onsuccess>4ca9974e-19b1-47af-9c96-dc523a65c3e9</onsuccess>
+    <groupid>b7942cab-9076-49f4-bcea-192c4b8f79e8</groupid>
+  </stage>
+  <stage stageid="d1513144-dbf3-4803-86b5-ada683cfaf55" name="One?" type="Decision">
+    <display x="60" y="405" />
+    <decision expression="[Results.C] = 1" />
+    <ontrue>7504f592-2068-496d-8a88-0ff0eab3ecb7</ontrue>
+    <onfalse>eb12e36c-93b9-4b7c-bc25-1b3641d89d06</onfalse>
+  </stage>
+  <stage stageid="f3c0a30b-f44f-4da0-939b-20d74f71f3c4" name="Correct" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="315" y="315" />
+    <datatype>flag</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="9240a1db-346b-400f-9ac8-3fbf3aa0baea" name="Coll1" type="Collection">
+    <display x="405" y="315" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="d01b1e56-227b-4652-a044-b35b49f350d8" name="Row" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="300" />
+    <datatype>number</datatype>
+    <initialvalue>1</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="d03adc73-001d-40e6-9a04-ace10fefb94e" name="Utility - Collection Manipulation::Copy Rows" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="345" />
+    <inputs>
+      <input type="number" name="Start Row" friendlyname="Start Row" narrative="The row index to start copying from. The index is from 0 to N-1 (where N is the total number of rows in the collection)." expr="[Row]" />
+      <input type="number" name="Number of Rows to Copy" friendlyname="Number of Rows to Copy" narrative="The number of rows to copy." expr="[Results.C]" />
+      <input type="collection" name="Source Collection" friendlyname="Source Collection" narrative="The collection to copy." expr="[Results2]" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Output Collection" friendlyname="Output Collection" narrative="The copied collection." stage="Coll1" />
+    </outputs>
+    <onsuccess>d1513144-dbf3-4803-86b5-ada683cfaf55</onsuccess>
+    <resource object="Utility - Collection Manipulation" action="Copy Rows" />
+  </stage>
+  <stage stageid="9054045a-0580-4b72-8783-5ed590228290" name="Calc1" type="Calculation">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="675" />
+    <onsuccess>a7ee4554-d022-4321-93a8-0e3fd700d9f3</onsuccess>
+    <calculation expression="[Row]+[Results.C]" stage="Row" />
+  </stage>
+  <stage stageid="7504f592-2068-496d-8a88-0ff0eab3ecb7" name="Anchor1" type="Anchor">
+    <loginhibit onsuccess="true" />
+    <display x="165" y="405" w="10" h="10" />
+    <onsuccess>260a6979-296a-4c3c-bb75-af6a24cf4c78</onsuccess>
+  </stage>
+  <stage stageid="260a6979-296a-4c3c-bb75-af6a24cf4c78" name="Calc2" type="Calculation">
+    <loginhibit onsuccess="true" />
+    <display x="165" y="450" />
+    <onsuccess>161c0ebb-f131-4128-8abb-0030199b0d9a</onsuccess>
+    <calculation expression="ToNumber([Coll1.Unit Quantity]) = [Coll1.BUOM Stock]" stage="Correct" />
+  </stage>
+  <stage stageid="161c0ebb-f131-4128-8abb-0030199b0d9a" name="Correct?" type="Decision">
+    <display x="165" y="495" />
+    <decision expression="[Correct]" />
+    <ontrue>9054045a-0580-4b72-8783-5ed590228290</ontrue>
+    <onfalse>c72f8189-2f3f-4b32-acfb-56ca8f717ae6</onfalse>
+  </stage>
+  <stage stageid="c72f8189-2f3f-4b32-acfb-56ca8f717ae6" name="Data - OLEDB::Execute" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="165" y="675" />
+    <inputs>
+      <input type="text" name="SQL" friendlyname="SQL" expr="&quot;UPDATE [batch upload$] SET [BUOM Stock (manual)]=0  WHERE [Batch]='&quot;&amp;[Coll1.Lot Number]&amp;&quot;'&quot;" />
+    </inputs>
+    <onsuccess>9054045a-0580-4b72-8783-5ed590228290</onsuccess>
+    <resource object="Data - OLEDB" action="Execute" />
+  </stage>
+  <stage stageid="e90072c7-42cd-4efd-bdad-fb842ec5e382" name="Batch Collection" type="Collection">
+    <display x="300" y="120" w="90" h="60" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="3acba162-f7d9-4c86-bf21-f2aa9531c00d" name="Data - OLEDB::Get Collection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="195" />
+    <inputs>
+      <input type="text" name="SQL" friendlyname="SQL" narrative="An SQL query to fetch the data. In most cases this will be a 'select' query." expr="&quot;SELECT [Batch (manual)] FROM [batch upload$] WHERE [Batch (manual)]&lt;&gt;''&quot;" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Results" friendlyname="Results" stage="Batch Collection" />
+    </outputs>
+    <onsuccess>5f292ef9-3bfc-46ba-8c82-3edd1842b05b</onsuccess>
+    <resource object="Data - OLEDB" action="Get Collection" />
+  </stage>
+  <stage stageid="eb12e36c-93b9-4b7c-bc25-1b3641d89d06" name="Loop Start2" type="LoopStart">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="465" />
+    <onsuccess>e3b47ae8-dfe1-4df5-86ce-e610e54f4588</onsuccess>
+    <groupid>d1d51182-420a-4c10-8185-e7acfff90a48</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>Coll1</loopdata>
+  </stage>
+  <stage stageid="a4ab1e34-19c9-463d-881a-97bd3981b420" name="Loop End2" type="LoopEnd">
+    <loginhibit onsuccess="true" />
+    <display x="60" y="600" />
+    <onsuccess>9054045a-0580-4b72-8783-5ed590228290</onsuccess>
+    <groupid>d1d51182-420a-4c10-8185-e7acfff90a48</groupid>
+  </stage>
+  <stage stageid="e3b47ae8-dfe1-4df5-86ce-e610e54f4588" name="Anchor2" type="Anchor">
+    <loginhibit onsuccess="true" />
+    <display x="-135" y="465" w="10" h="10" />
+    <onsuccess>574e8518-2937-4d68-a0a6-e06b284467e3</onsuccess>
+  </stage>
+  <stage stageid="574e8518-2937-4d68-a0a6-e06b284467e3" name="Utility - Collection Manipulation::Collection Contains Value" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="-135" y="495" w="120" h="30" />
+    <inputs>
+      <input type="collection" name="Collection" friendlyname="Collection" narrative="Required : The collection to search" expr="[Batch Collection]" />
+      <input type="text" name="Column Name" friendlyname="Column Name" narrative="Required : The name of the column to search" expr="&quot;Batch (manual)&quot;" />
+      <input type="text" name="Exact Value" friendlyname="Exact Value" narrative="Optional : The exact value to search for - this is case insensitive" expr="[Coll1.Case Identifier]" />
+      <input type="text" name="Regex" friendlyname="Regex" narrative="Optional : The regular expression to search for - this is case sensitive unless specified otherwise in the regular expression using &quot;(?i)&quot;" expr="" />
+    </inputs>
+    <outputs>
+      <output type="flag" name="Contains Search Term" friendlyname="Contains Search Term" narrative="Flag indicating if the collection found the given search term or not" stage="Fileld exists" />
+      <output type="collection" name="Groups" friendlyname="Groups" narrative="The groups defined in the regular expression when it is applied to the found term" stage="" />
+    </outputs>
+    <onsuccess>6be3c0e1-79bb-4c9f-ae22-8404bfead73d</onsuccess>
+    <resource object="Utility - Collection Manipulation" action="Collection Contains Value" />
+  </stage>
+  <stage stageid="07471d55-4d61-4189-886b-96236e0621bb" name="Fileld exists" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-180" y="450" />
+    <datatype>flag</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="6be3c0e1-79bb-4c9f-ae22-8404bfead73d" name="Decision1" type="Decision">
+    <display x="-135" y="555" />
+    <decision expression="[Fileld exists]" />
+    <ontrue>a4ab1e34-19c9-463d-881a-97bd3981b420</ontrue>
+    <onfalse>7f87c56f-d821-4688-8320-186e020bc6c2</onfalse>
+  </stage>
+  <stage stageid="7f87c56f-d821-4688-8320-186e020bc6c2" name="Data - OLEDB::Execute" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="-135" y="615" />
+    <inputs>
+      <input type="text" name="SQL" friendlyname="SQL" expr="&quot;INSERT INTO [batch upload$]([Material],[Plant],[Batch],[TDCVAL],[NPI Bucket],[Sub-sector],[BUOM Stock],[Batch (manual)],[BUOM Stock (manual)],[ID],[VL])&#xA;SELECT [Material],[Plant],[Batch],[TDCVAL],[NPI Bucket],[Sub-sector],[BUOM Stock],'&quot;&amp;[Coll1.Case Identifier]&amp;&quot;','&quot;&amp;[Coll1.Unit Quantity]&amp;&quot;',[ID],[VL] FROM [batch upload$] WHERE [Batch] = '&quot;&amp;[Coll1.Lot Number]&amp;&quot;'&quot; " />
+    </inputs>
+    <onsuccess>a4ab1e34-19c9-463d-881a-97bd3981b420</onsuccess>
+    <resource object="Data - OLEDB" action="Execute" />
+  </stage>
+</process>
